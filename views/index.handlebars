@@ -1,0 +1,27 @@
+<nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">The Scrapped News</a>
+    <button type = "button" ><a href="/scrape" class="btn btn-light">Scrape New Articles</a></button>
+    <button type="button">
+        <a href="/saved" class="btn btn-light">Saved Articles</a>
+    </button>
+</nav>
+
+    <br>
+     {{#each articles}}
+    <div class="jumbotron jumbotron-fluid">
+       
+        <div class="container">
+            <h6 id="title" class="display-4" >{{this.title}}</h6>
+            <a href={{this.link}}> Read It</a>
+            <br>
+            <button id="saved" class="btn btn-light" data-id ="{{this.id}}">Save</button>
+            <br>
+        </div>
+    </div>
+   {{/each}}
+
+    <footer class="footer">
+        <div class="container">
+            <span>© 2018, The Scrapped News</span>
+        </div>
+    </footer>
