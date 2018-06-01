@@ -11,9 +11,11 @@ var axios = require("axios");
 var cheerio = require("cheerio");
 
 // Require all models
-var db = require("./models");
+var db = require("/models");
 
-var PORT = 3000;
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scrappednews";
+
+var PORT = process.env.PORT || 3000;
 
 // Initialize Express
 var app = express();
@@ -41,9 +43,13 @@ app.use(express.static("public"));
 //For Handlebars
 app.engine("handlebars", exphbs({ defaultLayout: "main"}));
 app.set("view engine", "handlebars");
+mongoose.Promise = Promise;
 
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/scrappednews");
+mongoose.connect(MONGODB_URI, {}, function (err) {
+    console.log(err);
+});
+
 
 // Routes
 
@@ -219,6 +225,20 @@ app.post("/articles/:id", function (req, res) {
         });
 });
 
+app.get("/articles/:id", function (req, res) {
+    // Create a new note and pass the req.body to the entry
+    db.Note.findOne({
+        _id: req.params.id
+    })
+        .then(function (dbNote) {
+            return db.Article.findOne
+        
+        })
+        .catch(function (err) {
+            // If an error occurred, send it to the client
+            res.json(err);
+        });
+});
 // Start the server
 app.listen(PORT, function () {
     console.log("App running on port " + PORT + "!");
